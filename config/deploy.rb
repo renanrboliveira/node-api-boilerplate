@@ -56,7 +56,7 @@ task :deploy do
   # you can use `run :local` to run tasks on local machine before of after the deploy scripts
   # run :local { say 'done' }
 end
-desc "NPM Tasks"
+desc "yarn Tasks"
 namespace :npm do
   desc "Install node modules"
   task :install do
@@ -66,6 +66,7 @@ namespace :npm do
   desc "Perform production deploy"
   task :build do
     command "cd ~/deploy/current"
+    command "cd ./node_modules/.bin/pm2 kill"
     command "cp .env.example .env"
     command "yarn start"
   end
