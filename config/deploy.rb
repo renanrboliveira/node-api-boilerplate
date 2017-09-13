@@ -65,7 +65,9 @@ namespace :npm do
   end
   desc "Perform production deploy"
   task :build do
-    command "cd ~/deploy/current && yarn start"
+    command "cd ~/deploy/current"
+    command "cp .env.example .env"
+    command "yarn start"
   end
 end
 # For help in making your deploy script, see the Mina documentation:
