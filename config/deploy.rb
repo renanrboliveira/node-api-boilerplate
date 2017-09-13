@@ -9,8 +9,8 @@ require 'mina/git'
 #   branch       - Branch name to deploy. (needed by mina/git)
 set :domain, 'app.renanol.me'
 set :deploy_to, '/home/app.renanol.me/deploy'
-set :repository, 'git@gitlab.fractaltecnologia.com.br:fractal/ead-adaptativo-ui.git'
-set :branch, 'dev'
+set :repository, 'git@github.com:renanol/node-api-boilerplate.git'
+set :branch, 'master'
 set :user, 'app.renanol.me'
 set :commit, ENV['commit']
 # Optional settings:
@@ -32,7 +32,7 @@ end
 # Put any custom commands you need to run at setup
 # All paths in `shared_dirs` and `shared_paths` will be created on their own.
 task :setup do
-  # command %{rbenv install 2.3.0}
+  # command %{npm i -g yarn}
 end
 desc "Deploys the current version to the server."
 task :deploy do
@@ -42,7 +42,7 @@ task :deploy do
     # Put things that will set up an empty directory into a fully set-up
     # instance of your project.
     invoke :'git:clone'
-    invoke :'deploy:link_shared_paths'
+    # invoke :'deploy:link_shared_paths'
     invoke :'npm:install'
     invoke :'npm:build'
     invoke :'deploy:cleanup'
@@ -60,11 +60,12 @@ desc "NPM Tasks"
 namespace :npm do
   desc "Install node modules"
   task :install do
-    command "npm install"
+    command "npm i -g yarn  "
+    command "yarn install"
   end
   desc "Perform production deploy"
   task :build do
-    command "npm start"
+    command "yarn start"
   end
 end
 # For help in making your deploy script, see the Mina documentation:
