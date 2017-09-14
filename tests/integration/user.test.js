@@ -13,17 +13,19 @@ import { jwtExpirationInterval as JWT_EXPIRATION } from '../../src/config/vars';
  * root level hooks
  */
 
-async function format(user) {
+function format(user) {
   const formated = user;
 
   // delete password
   delete formated.password;
-
+  let userFind;
   // get users from database
-  const dbUser = (await User.findOne({ email: user.email })).transform();
+  User.findOne({ email: user.email })
+    .then((dbUser) => {
+      userFind = omitBy(dbUser, isNil);
+    });
 
-  // remove null and undefined properties
-  return omitBy(dbUser, isNil);
+  return userFind;
 }
 
 describe('Users API', () => {
@@ -171,8 +173,6 @@ describe('Users API', () => {
           const includesBranStark = some(res.body, bran);
           const includesjonSnow = some(res.body, john);
 
-          console.log(dbUsers)
-
           // before comparing it is necessary to convert String to Date
           res.body[0].createdAt = new Date(res.body[0].createdAt);
           res.body[1].createdAt = new Date(res.body[1].createdAt);
@@ -180,6 +180,7 @@ describe('Users API', () => {
           expect(res.body).to.have.lengthOf(2);
           expect(includesBranStark).to.be.true;
           expect(includesjonSnow).to.be.true;
+
         });
     });
 

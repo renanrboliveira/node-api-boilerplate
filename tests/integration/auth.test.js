@@ -11,7 +11,7 @@ describe('Authentication API', () => {
   let user;
   let refreshToken;
 
-  beforeEach(async () => {
+  beforeEach(() => {
     dbUser = {
       email: 'branstark@gmail.com',
       password: 'mypassword',
@@ -31,7 +31,7 @@ describe('Authentication API', () => {
       userEmail: dbUser.email,
       expires: new Date(),
     };
-    User.remove({})
+    return User.remove({})
       .then(() => {
         User.create(dbUser).then(() => {
           RefreshToken.remove({});

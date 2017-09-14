@@ -29,7 +29,7 @@ const register = async (req, res, next) => {
       return res.json({ token, user: userTransformed });
     })
     .catch((error) => {
-      next(User.checkDuplicateEmail(error))
+      next(User.checkDuplicateEmail(error));
     });
 };
 

@@ -66,7 +66,7 @@ namespace :npm do
   desc "Perform production deploy"
   task :build do
     command "cd ~/deploy/current"
-    command "cd ./node_modules/.bin/pm2 kill"
+    command "./node_modules/.bin/pm2 kill"
     command "cp .env.example .env"
     command "yarn start"
   end

@@ -5,6 +5,11 @@ import authRoutes from './auth.route';
 const router = express.Router();
 
 /**
+ * GET v1/
+ */
+router.get('/', (req, res) => res.send('It\'s Work!'));
+
+/**
  * GET v1/status
  */
 router.get('/status', (req, res) => res.send('OK'));
@@ -14,7 +19,14 @@ router.get('/status', (req, res) => res.send('OK'));
  */
 router.use('/docs', express.static('docs'));
 
+/**
+ * GET v1/users
+ */
 router.use('/users', userRoutes);
+
+/**
+ * GET v1/auth
+ */
 router.use('/auth', authRoutes);
 
-module.exports = router;
+export default router;

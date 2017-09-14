@@ -1,8 +1,8 @@
 import mongoose from 'mongoose';
 import { mongo, env } from './vars';
 
-// set mongoose Promise to Bluebird
-mongoose.Promise = Promise;
+// set mongoose native Promise
+mongoose.Promise = global.Promise;
 
 // Exit application on error
 mongoose.connection.on('error', (err) => {
