@@ -2,7 +2,7 @@ import mongoose from 'mongoose';
 import { mongo, env } from './vars';
 
 // set mongoose native Promise
-mongoose.Promise = global.Promise;
+mongoose.Promise = Promise;
 
 // Exit application on error
 mongoose.connection.on('error', (err) => {

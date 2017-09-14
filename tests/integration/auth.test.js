@@ -78,7 +78,7 @@ describe('Authentication API', () => {
         .send(user)
         .expect(httpStatus.BAD_REQUEST)
         .then((res) => {
-          const field = res.body.errors[0].field;
+          const field = res.body.errors[0].field[0];
           const location = res.body.errors[0].location;
           const messages = res.body.errors[0].messages;
           expect(field).to.be.equal('email');
@@ -94,7 +94,7 @@ describe('Authentication API', () => {
         .send({})
         .expect(httpStatus.BAD_REQUEST)
         .then((res) => {
-          const field = res.body.errors[0].field;
+          const field = res.body.errors[0].field[0];
           const location = res.body.errors[0].location;
           const messages = res.body.errors[0].messages;
           expect(field).to.be.equal('email');
@@ -127,7 +127,7 @@ describe('Authentication API', () => {
         .send({})
         .expect(httpStatus.BAD_REQUEST)
         .then((res) => {
-          const field = res.body.errors[0].field;
+          const field = res.body.errors[0].field[0];
           const location = res.body.errors[0].location;
           const messages = res.body.errors[0].messages;
           expect(field).to.be.equal('email');
@@ -144,7 +144,7 @@ describe('Authentication API', () => {
         .send(user)
         .expect(httpStatus.BAD_REQUEST)
         .then((res) => {
-          const field = res.body.errors[0].field;
+          const field = res.body.errors[0].field[0];
           const location = res.body.errors[0].location;
           const messages = res.body.errors[0].messages;
           expect(field).to.be.equal('email');
@@ -209,10 +209,10 @@ describe('Authentication API', () => {
         .send({})
         .expect(httpStatus.BAD_REQUEST)
         .then((res) => {
-          const field1 = res.body.errors[0].field;
+          const field1 = res.body.errors[0].field[0];
           const location1 = res.body.errors[0].location;
           const messages1 = res.body.errors[0].messages;
-          const field2 = res.body.errors[1].field;
+          const field2 = res.body.errors[1].field[0];
           const location2 = res.body.errors[1].location;
           const messages2 = res.body.errors[1].messages;
           expect(field1).to.be.equal('email');
