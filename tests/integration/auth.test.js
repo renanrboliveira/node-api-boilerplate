@@ -40,8 +40,8 @@ describe('Authentication API', () => {
   });
 
   describe('POST /v1/auth/register', () => {
-    it('should register a new user when request is ok', () => {
-      return request(app)
+    it('should register a new user when request is ok', (done) => {
+      request(app)
         .post('/v1/auth/register')
         .send(user)
         .expect(httpStatus.CREATED)
@@ -52,6 +52,7 @@ describe('Authentication API', () => {
           expect(res.body.token).to.have.a.property('expiresIn');
           expect(res.body.user).to.include(user);
         });
+      done();
     });
 
     it('should report error when email already exists', () => {
