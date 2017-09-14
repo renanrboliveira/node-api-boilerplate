@@ -11,7 +11,7 @@ describe('Authentication API', () => {
   let user;
   let refreshToken;
 
-  beforeEach(() => {
+  beforeEach((done) => {
     dbUser = {
       email: 'branstark@gmail.com',
       password: 'mypassword',
@@ -31,10 +31,11 @@ describe('Authentication API', () => {
       userEmail: dbUser.email,
       expires: new Date(),
     };
-    return User.remove({})
+    User.remove({})
       .then(() => {
         User.create(dbUser).then(() => {
           RefreshToken.remove({});
+          done();
         });
       });
   });
@@ -51,12 +52,11 @@ describe('Authentication API', () => {
           expect(res.body.token).to.have.a.property('refreshToken');
           expect(res.body.token).to.have.a.property('expiresIn');
           expect(res.body.user).to.include(user);
+          done();
         });
-      done();
     });
-
-    it('should report error when email already exists', () => {
-      return request(app)
+    it('should report error when email already exists', (done) => {
+      request(app)
         .post('/v1/auth/register')
         .send(dbUser)
         .expect(httpStatus.CONFLICT)
@@ -67,12 +67,13 @@ describe('Authentication API', () => {
           expect(field).to.be.equal('email');
           expect(location).to.be.equal('body');
           expect(messages).to.include('"email" already exists');
+          done();
         });
     });
 
-    it('should report error when the email provided is not valid', () => {
+    it('should report error when the email provided is not valid', (done) => {
       user.email = 'this_is_not_an_email';
-      return request(app)
+      request(app)
         .post('/v1/auth/register')
         .send(user)
         .expect(httpStatus.BAD_REQUEST)
@@ -83,11 +84,12 @@ describe('Authentication API', () => {
           expect(field).to.be.equal('email');
           expect(location).to.be.equal('body');
           expect(messages).to.include('"email" must be a valid email');
+          done();
         });
     });
 
-    it('should report error when email and password are not provided', () => {
-      return request(app)
+    it('should report error when email and password are not provided', (done) => {
+      request(app)
         .post('/v1/auth/register')
         .send({})
         .expect(httpStatus.BAD_REQUEST)
@@ -98,13 +100,14 @@ describe('Authentication API', () => {
           expect(field).to.be.equal('email');
           expect(location).to.be.equal('body');
           expect(messages).to.include('"email" is required');
+          done();
         });
     });
   });
 
   describe('POST /v1/auth/login', () => {
-    it('should return an accessToken and a refreshToken when email and password matches', () => {
-      return request(app)
+    it('should return an accessToken and a refreshToken when email and password matches', (done) => {
+      request(app)
         .post('/v1/auth/login')
         .send(dbUser)
         .expect(httpStatus.OK)
@@ -114,11 +117,12 @@ describe('Authentication API', () => {
           expect(res.body.token).to.have.a.property('refreshToken');
           expect(res.body.token).to.have.a.property('expiresIn');
           expect(res.body.user).to.include(dbUser);
+          done();
         });
     });
 
-    it('should report error when email and password are not provided', () => {
-      return request(app)
+    it('should report error when email and password are not provided', (done) => {
+      request(app)
         .post('/v1/auth/login')
         .send({})
         .expect(httpStatus.BAD_REQUEST)
@@ -129,12 +133,13 @@ describe('Authentication API', () => {
           expect(field).to.be.equal('email');
           expect(location).to.be.equal('body');
           expect(messages).to.include('"email" is required');
+          done();
         });
     });
 
-    it('should report error when the email provided is not valid', () => {
+    it('should report error when the email provided is not valid', (done) => {
       user.email = 'this_is_not_an_email';
-      return request(app)
+      request(app)
         .post('/v1/auth/login')
         .send(user)
         .expect(httpStatus.BAD_REQUEST)
@@ -145,11 +150,12 @@ describe('Authentication API', () => {
           expect(field).to.be.equal('email');
           expect(location).to.be.equal('body');
           expect(messages).to.include('"email" must be a valid email');
+          done();
         });
     });
 
-    it('should report error when email and password don\'t match', () => {
-      return request(app)
+    it('should report error when email and password don\'t match', (done) => {
+      request(app)
         .post('/v1/auth/login')
         .send(user)
         .expect(httpStatus.UNAUTHORIZED)
@@ -158,40 +164,47 @@ describe('Authentication API', () => {
           const message = res.body.message;
           expect(code).to.be.equal(401);
           expect(message).to.be.equal('Incorrect email or password');
+          done();
         });
     });
   });
 
   describe('POST /v1/auth/refresh-token', () => {
-    it('should return a new accessToken when refreshToken and email match', async () => {
-      await RefreshToken.create(refreshToken);
-      return request(app)
-        .post('/v1/auth/refresh-token')
-        .send({ email: dbUser.email, refreshToken: refreshToken.token })
-        .expect(httpStatus.OK)
-        .then((res) => {
-          expect(res.body).to.have.a.property('accessToken');
-          expect(res.body).to.have.a.property('refreshToken');
-          expect(res.body).to.have.a.property('expiresIn');
+    it('should return a new accessToken when refreshToken and email match', (done) => {
+      RefreshToken.create(refreshToken)
+        .then(() => {
+          request(app)
+            .post('/v1/auth/refresh-token')
+            .send({ email: dbUser.email, refreshToken: refreshToken.token })
+            .expect(httpStatus.OK)
+            .then((res) => {
+              expect(res.body).to.have.a.property('accessToken');
+              expect(res.body).to.have.a.property('refreshToken');
+              expect(res.body).to.have.a.property('expiresIn');
+              done();
+            });
         });
     });
 
-    it('should report error when email and refreshToken don\'t match', async () => {
-      await RefreshToken.create(refreshToken);
-      return request(app)
-        .post('/v1/auth/refresh-token')
-        .send({ email: user.email, refreshToken: refreshToken.token })
-        .expect(httpStatus.UNAUTHORIZED)
-        .then((res) => {
-          const code = res.body.code;
-          const message = res.body.message;
-          expect(code).to.be.equal(401);
-          expect(message).to.be.equal('Incorrect email or refreshToken');
+    it('should report error when email and refreshToken don\'t match', (done) => {
+      RefreshToken.create(refreshToken)
+        .then(() => {
+          request(app)
+            .post('/v1/auth/refresh-token')
+            .send({ email: user.email, refreshToken: refreshToken.token })
+            .expect(httpStatus.UNAUTHORIZED)
+            .then((res) => {
+              const code = res.body.code;
+              const message = res.body.message;
+              expect(code).to.be.equal(401);
+              expect(message).to.be.equal('Incorrect email or refreshToken');
+              done();
+            });
         });
     });
 
-    it('should report error when email and refreshToken are not provided', () => {
-      return request(app)
+    it('should report error when email and refreshToken are not provided', (done) => {
+      request(app)
         .post('/v1/auth/refresh-token')
         .send({})
         .expect(httpStatus.BAD_REQUEST)
@@ -208,6 +221,7 @@ describe('Authentication API', () => {
           expect(field2).to.be.equal('refreshToken');
           expect(location2).to.be.equal('body');
           expect(messages2).to.include('"refreshToken" is required');
+          done();
         });
     });
   });
