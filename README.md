@@ -1,5 +1,7 @@
 # Node API Boilerplate
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/renanol/node-api-boilerplate.svg)](https://greenkeeper.io/)
+
 
 ## Getting Started
 
