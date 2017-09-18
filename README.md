@@ -1,5 +1,7 @@
 # Node API Boilerplate
 
+[![Build Status](https://travis-ci.org/renanol/node-api-boilerplate.svg?branch=master)](https://travis-ci.org/renanol/node-api-boilerplate)
+[![Coverage Status](https://coveralls.io/repos/github/renanol/node-api-boilerplate/badge.svg?branch=master)](https://coveralls.io/github/renanol/node-api-boilerplate?branch=master)
 [![Greenkeeper badge](https://badges.greenkeeper.io/renanol/node-api-boilerplate.svg)](https://greenkeeper.io/)
 
 
