@@ -7,11 +7,11 @@ require 'mina/git'
 #   deploy_to    - Path to deploy into.
 #   repository   - Git repo to clone from. (needed by mina/git)
 #   branch       - Branch name to deploy. (needed by mina/git)
-set :domain, 'app.renanol.me'
-set :deploy_to, '/home/app.renanol.me/deploy'
-set :repository, 'git@github.com:renanol/node-api-boilerplate.git'
-set :branch, 'master'
-set :user, 'app.renanol.me'
+set :domain, 'NAME_DOMAIN'
+set :deploy_to, 'URL_FILE/deploy'
+set :repository, 'REPOSITORY'
+set :branch, 'BRANCH'
+set :user, 'USER_SERVER'
 set :commit, ENV['commit']
 # Optional settings:
 #   set :user, 'foobar'          # Username in the server to SSH to.
