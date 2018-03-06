@@ -95,7 +95,7 @@
     "nyc": "^11.0.3",
     "opn-cli": "^3.1.0",
     "sinon": "^3.0.0",
-    "sinon-chai": "^2.10.0",
+    "sinon-chai": "^3.0.0",
     "supertest": "^3.0.0"
   },
   "license": "MIT"
