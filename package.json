@@ -73,7 +73,7 @@
     "lodash": "^4.17.4",
     "method-override": "^3.0.0",
     "moment-timezone": "^0.5.13",
-    "mongoose": "^5.0.0",
+    "mongoose": "^5.8.7",
     "morgan": "^1.8.1",
     "passport": "^0.4.0",
     "passport-jwt": "4.0.0",
