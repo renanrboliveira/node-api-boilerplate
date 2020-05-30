@@ -80,7 +80,7 @@
     "pm2": "^3.0.0"
   },
   "devDependencies": {
-    "apidoc": "^0.17.5",
+    "apidoc": "^0.23.0",
     "babel-cli": "^6.26.0",
     "babel-preset-env": "^1.6.0",
     "chai": "^4.1.0",
